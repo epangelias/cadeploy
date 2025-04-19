@@ -8,13 +8,15 @@ export async function getCaddyRoutes() {
 }
 
 export async function setCaddyConfig(config: CaddyConfig) {
-  console.log({ config });
+  console.log(config.apps.http.servers.srv0);
   const body = JSON.stringify(config);
+  console.log({ body });
   const res = await fetch('http://localhost:2019/load', {
     method: 'POST',
     body,
     headers: { "Content-Type": "application/json" }
   })
+  console.log(res);
   if (!res.ok) throw await res.text()
   return res.json()
 }
@@ -44,6 +46,8 @@ export async function reverseProxy(host: string, port: number) {
     match: [{ host: [host] }],
     terminal: true,
   } as Route;
+
+  console.log('new route', route);
 
   const routes = config.apps.http.servers.srv0.routes;
 
