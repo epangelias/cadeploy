@@ -3,7 +3,7 @@
 import { parseArgs } from "@std/cli";
 import * as Path from "@std/path";
 import { cloneRepo, createService } from "../lib/utils.ts";
-import { findOpenPort, getCaddyRoutes } from "../lib/caddy.ts";
+import { findOpenPort } from "../lib/caddy.ts";
 
 const args = parseArgs<{ entry?: string, build?: string | boolean, dir?: string, domain?: string }>(Deno.args);
 
@@ -21,6 +21,9 @@ if (!projectName) projectName = prompt("Enter project name")!;
 async function init() {
   const port = await findOpenPort(5000, 6000);
 
+  const execStartPre = [`${Deno.execPath()} -A ${import.meta.resolve('./proxy.ts')} ${domain}:${port}`];
+  if (build) execStartPre.push(build);
+
   await cloneRepo(url, dir);
   await createService({
     name: projectName,
@@ -28,10 +31,8 @@ async function init() {
     environment: [`DOMAIN=${domain}`, `PORT=${port}`],
     execStart: entryPoint,
     workingDirectory: dir,
-    execStartPre: [`${build}`],
+    execStartPre,
   });
 }
-
-console.log(await getCaddyRoutes());
 
 await init();
