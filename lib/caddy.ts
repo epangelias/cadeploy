@@ -9,7 +9,13 @@ export async function getCaddyRoutes() {
 
 export async function setCaddyRoutes(routes: Route[]) {
   const body = JSON.stringify(routes)
-  const res = await fetch('http://localhost:2019/config/apps/http/servers/srv0/routes', { method: 'POST', body })
+  const res = await fetch('http://localhost:2019/config/apps/http/servers/srv0/routes', {
+    method: 'POST',
+    body,
+    headers: {
+      "content-type": "application/json"
+    }
+  })
   if (!res.ok) throw await res.text()
   return res.json()
 }
