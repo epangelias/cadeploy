@@ -32,6 +32,7 @@ export type Handler = {
   };
   /** Root directory for file_server handler (e.g., "/var/www/html"). */
   root?: string;
+  routes: Route[];
 };
 
 /** Defines a route for handling HTTP requests. */

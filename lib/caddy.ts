@@ -26,8 +26,17 @@ export async function reverseProxy(host: string, port: number) {
   const route = {
     handle: [
       {
-        handler: 'reverse_proxy',
-        upstreams: [{ dial: `localhost:${port}` }],
+        handler: "subroute",
+        routes: [
+          {
+            handle: [
+              {
+                handler: "reverse_proxy",
+                upstreams: [{ "dial": "localhost:5101" }]
+              }
+            ]
+          }
+        ]:
       },
     ],
     match: [{ host: [host] }],
@@ -62,6 +71,7 @@ export async function findOpenPort(startPort: number, endPort: number) {
     try {
       const listener = Deno.listen({ port })
       listener.close()
+      console.log("fount port ", port);
       return port
     } catch {
       continue
