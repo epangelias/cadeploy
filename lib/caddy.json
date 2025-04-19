@@ -1,0 +1,89 @@
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [":443"],
+          "routes": [
+            {
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [{ "dial": "localhost:5001" }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "match": [{ "host": ["gageignite.vaza.app"] }],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [{ "dial": "localhost:5101" }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "match": [{ "host": ["dan.mentium.ai"] }],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [{ "dial": "localhost:2019" }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "match": [{ "host": ["caddy.vaza.app"] }],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "upstreams": [{ "dial": "localhost:5000" }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "match": [{ "host": ["vaza.app"] }],
+              "terminal": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}
