@@ -5,11 +5,11 @@ import * as Path from "jsr:@std/path";
 import { cloneRepo, createService } from "../lib/utils.ts";
 import { findOpenPort } from "../lib/caddy.ts";
 
-const args = parseArgs<{ entry?: string, build?: string | boolean, dir?: string, domain?: string }>(Deno.args);
+const args = parseArgs<{ entry?: string, build?: string | boolean, dir?: string, domain?: string, name?: string }>(Deno.args);
 
 const homeDir = Deno.env.get('HOME')!;
 const url = args._[0]?.toString();
-let projectName = url.match(/([^\/]+)\.git/)?.at(1)!;
+let projectName = args.name || url.match(/([^\/]+)\.git/)?.at(1)!;
 const domain = args.domain || `${projectName}.${Deno.hostname()}`;
 const dir = args.dir ? Path.resolve(args.dir) : Path.resolve(homeDir, `apps/${projectName}`);
 const entry = args.entry ? Path.resolve(dir, args.entry) : Path.resolve(dir, 'main.ts');
