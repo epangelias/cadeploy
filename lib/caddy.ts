@@ -1,47 +1,50 @@
-import { Route } from "./types.ts";
+import { CaddyConfig, Route } from "./types.ts";
 
 
 export async function getCaddyRoutes() {
-  const res = await fetch('http://localhost:2019/config/apps/http/servers/srv0/routes')
+  const res = await fetch('http://localhost:2019/config/')
   if (!res.ok) throw await res.text()
-  return await res.json() as Route[]
+  return await res.json() as CaddyConfig;
 }
 
-export async function setCaddyRoutes(routes: Route[]) {
-  const body = JSON.stringify(routes)
-  const res = await fetch('http://localhost:2019/config/apps/http/servers/srv0/routes', {
+export async function setCaddyConfig(config: CaddyConfig) {
+  const body = JSON.stringify(config)
+  const res = await fetch('http://localhost:2019/load', {
     method: 'POST',
     body,
-    headers: {
-      "content-type": "application/json"
-    }
+    headers: { "Content-Type": "application/json" }
   })
   if (!res.ok) throw await res.text()
   return res.json()
 }
 
 export async function reverseProxy(host: string, port: number) {
-  const routes = await getCaddyRoutes();
+  const config = await getCaddyRoutes();
 
   const route = {
     handle: [
       {
-        handler: "subroute",
-        routes: [
-          {
-            handle: [
-              {
-                handler: "reverse_proxy",
-                upstreams: [{ "dial": "localhost:5101" }]
-              }
-            ]
-          }
-        ]
+        handler: "reverse_proxy",
+        upstreams: [{ "dial": `localhost:${port}` }]
+
+        // handler: "subroute",
+        // routes: [
+        //   {
+        //     handle: [
+        //       {
+        //         handler: "reverse_proxy",
+        //         upstreams: [{ "dial": `localhost:${port}` }]
+        //       }
+        //     ]
+        //   }
+        // ]
       },
     ],
     match: [{ host: [host] }],
     terminal: true,
   } as Route;
+
+  const routes = config.apps.http.servers.srv0.routes;
 
   const existingRouteIndex = routes.findIndex(
     (route) => route.match?.some((matcher) => matcher.host.includes(host))
@@ -50,11 +53,13 @@ export async function reverseProxy(host: string, port: number) {
   if (existingRouteIndex !== -1) routes[existingRouteIndex] = route;
   else routes.push(route);
 
-  await setCaddyRoutes(routes);
+  await setCaddyConfig(config);
 }
 
 export async function findOpenPort(startPort: number, endPort: number) {
-  const routes = await getCaddyRoutes()
+  const config = await getCaddyRoutes()
+  const routes = config.apps.http.servers.srv0.routes
+
   const usedPorts = new Set<number>();
   for (const route of routes) {
     for (const handler of route.handle) {
