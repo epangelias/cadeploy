@@ -1,5 +1,5 @@
-import * as Text from "@std/text";
-import * as Path from "@std/path";
+import * as Text from "jsr:@std/text";
+import * as Path from "jsr:@std/path";
 
 
 export async function cloneRepo(url: string, dir?: string) {

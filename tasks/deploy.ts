@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno -A
 
-import { parseArgs } from "@std/cli";
-import * as Path from "@std/path";
+import { parseArgs } from "jsr:@std/cli";
+import * as Path from "jsr:@std/path";
 import { cloneRepo, createService } from "../lib/utils.ts";
 import { findOpenPort } from "../lib/caddy.ts";
 
