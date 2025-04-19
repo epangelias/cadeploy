@@ -18,7 +18,7 @@ export async function setCaddyConfig(config: CaddyConfig) {
   })
   console.log(res);
   if (!res.ok) throw await res.text()
-  return res.json()
+  console.log(await res.text());
 }
 
 export async function reverseProxy(host: string, port: number) {
