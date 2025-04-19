@@ -8,7 +8,8 @@ export async function getCaddyRoutes() {
 }
 
 export async function setCaddyConfig(config: CaddyConfig) {
-  const body = JSON.stringify(config)
+  console.log({ config });
+  const body = JSON.stringify(config);
   const res = await fetch('http://localhost:2019/load', {
     method: 'POST',
     body,
