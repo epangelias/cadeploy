@@ -27,8 +27,10 @@ After=network.target
 
 [Service]
 ExecStart=${options.execStart}
-${execPreStarts}WorkingDirectory=${options.workingDirectory}
-${environments}Restart=always
+${execPreStarts}
+WorkingDirectory=${options.workingDirectory}
+${environments}
+Restart=always
 StandardOutput=journal
 StandardError=journal
 
