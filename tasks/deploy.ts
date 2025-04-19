@@ -21,10 +21,16 @@ if (!projectName) projectName = prompt("Enter project name")!;
 async function init() {
   const port = await findOpenPort(5000, 6000);
 
-  const execStartPre = [`${Deno.execPath()} -Ar ${import.meta.resolve('./proxy.ts')} ${domain}:${port}`];
+  const execStartPre = [
+    'git pull',
+    `${Deno.execPath()} -Ar ${import.meta.resolve('./proxy.ts')} ${domain}:${port}`
+  ];
   if (build) execStartPre.push(build);
 
   await cloneRepo(url, dir);
+
+  await Deno.readFile(entry);
+
   await createService({
     name: projectName,
     description: projectName,
