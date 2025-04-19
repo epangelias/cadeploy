@@ -9,14 +9,17 @@ const args = parseArgs<{ entry?: string, build?: string | boolean, dir?: string,
 
 const homeDir = Deno.env.get('HOME')!;
 const url = args._[0]?.toString();
-let projectName = args.name || url.match(/([^\/]+)\.git/)?.at(1)!;
+const projectName = args.name || url.match(/([^\/]+)\.git/)?.at(1)!;
 const domain = args.domain || `${projectName}.${Deno.hostname()}`;
 const dir = args.dir ? Path.resolve(args.dir) : Path.resolve(homeDir, `apps/${projectName}`);
 const entry = args.entry ? Path.resolve(dir, args.entry) : Path.resolve(dir, 'main.ts');
 const build = args.build === true ? Path.resolve(dir, 'tasks/build.ts') : (args.build ? Path.resolve(dir, args.build) : undefined);
 
-if (!url) throw "You must provide a url";
-if (!projectName) projectName = prompt("Enter project name")!;
+if (!url) {
+  // Help
+  console.log("Help");
+  Deno.exit();
+}
 
 async function init() {
   const port = await findOpenPort(5000, 6000);
