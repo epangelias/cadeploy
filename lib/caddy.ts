@@ -36,7 +36,7 @@ export async function reverseProxy(host: string, port: number) {
               }
             ]
           }
-        ]:
+        ]
       },
     ],
     match: [{ host: [host] }],
