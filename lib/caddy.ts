@@ -29,7 +29,7 @@ export async function setCaddyConfig(config: CaddyConfig) {
 }
 
 export async function ReverseProxy(options: CadeployOptions) {
-  const [host, port] = options.args._[0].toString().split(':');
+  const [host, port] = options.args._[1].toString().split(':');
 
   const config = await getCaddyRoutes();
 
