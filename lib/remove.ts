@@ -7,6 +7,7 @@ export async function RemoveDeploy(options: CadeployOptions) {
 
   await new Deno.Command('systemctl', { args: ["--user", "stop", serviceName], stderr: 'inherit' }).output();
   await new Deno.Command('systemctl', { args: ["--user", "disable", serviceName], stderr: 'inherit' }).output();
+  await new Deno.Command('systemctl', { args: ["--user", "daemon-reload"], stderr: 'inherit' }).output();
   await Deno.remove(service.FragmentPath, { recursive: true });
   await Deno.remove(service.WorkingDirectory, { recursive: true });
 }
