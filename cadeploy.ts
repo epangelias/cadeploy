@@ -3,7 +3,7 @@
 import { parseArgs } from "jsr:@std/cli";
 import { CadeployArgs, CadeployOptions } from "./lib/types.ts";
 import { Deploy } from "./lib/deploy.ts";
-import { helpCLI, isURL } from "./lib/utils.ts";
+import { isURL } from "./lib/utils.ts";
 import { ReverseProxy } from "./lib/caddy.ts";
 import { RemoveDeploy } from "./lib/remove.ts";
 import { Help } from "./lib/help.ts";
