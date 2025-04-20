@@ -4,8 +4,8 @@ import * as Color from 'jsr:@std/fmt/colors';
 
 export function Help() {
   helpCLI({
-    name: "cadeploy",
-    description: "Caddy reverse proxy deployer",
+    name: "cadeploy 04:48:48 PM",
+    description: "One step deployments",
     usage: `cadeploy <git-url> [options]
 \tcadeploy proxy <host:port>
 \tcadeploy rm <service>
