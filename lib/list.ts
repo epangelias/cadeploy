@@ -10,7 +10,7 @@ export async function ListDeployments(options: CadeployOptions) {
     try {
       if (!entry.isFile || !entry.name.endsWith('.service')) continue;
       const service = await parseSystemdService(entry.name);
-      console.log(`${Color.green(entry.name.slice(0, -8))} - ${Color.gray(service.Description)}
+      console.log(`${Color.green(entry.name.slice(0, -8))} ${Color.gray(service.Description)}
 \t${service.WorkingDirectory}
 \t${service.Environment}\n`);
     } catch (_e) { }
