@@ -1,4 +1,4 @@
-import { CaddyConfig, Route } from "./types.ts";
+import { CaddyConfig, CadeployOptions, Route } from "./types.ts";
 
 
 export async function getCaddyRoutes() {
@@ -21,7 +21,9 @@ export async function setCaddyConfig(config: CaddyConfig) {
   console.log(await res.text());
 }
 
-export async function reverseProxy(host: string, port: number) {
+export async function ReverseProxy(options: CadeployOptions) {
+  const [host, port] = options.args._[0].toString().split(':');
+
   const config = await getCaddyRoutes();
 
   const route = {
@@ -29,18 +31,6 @@ export async function reverseProxy(host: string, port: number) {
       {
         handler: "reverse_proxy",
         upstreams: [{ "dial": `localhost:${port}` }]
-
-        // handler: "subroute",
-        // routes: [
-        //   {
-        //     handle: [
-        //       {
-        //         handler: "reverse_proxy",
-        //         upstreams: [{ "dial": `localhost:${port}` }]
-        //       }
-        //     ]
-        //   }
-        // ]
       },
     ],
     match: [{ host: [host] }],

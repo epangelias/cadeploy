@@ -1,6 +1,6 @@
 import * as Text from "jsr:@std/text";
 import * as Path from "jsr:@std/path";
-
+import * as Color from 'jsr:@std/fmt/colors';
 
 export async function cloneRepo(url: string, dir?: string) {
   const cmd = new Deno.Command('git', { args: ['clone', url, dir!], stderr: 'piped' })
@@ -45,4 +45,55 @@ WantedBy=default.target`;
   await new Deno.Command('systemctl', { args: "--user daemon-reload".split(' '), stderr: 'inherit' }).output();
   await new Deno.Command('systemctl', { args: ["--user", "enable", serviceName], stderr: 'inherit' }).output();
   await new Deno.Command('systemctl', { args: ["--user", "start", serviceName], stderr: 'inherit' }).output();
+}
+
+
+export function isURL(url: unknown) {
+  try {
+    new URL(url as string);
+    return true;
+  } catch (_e) {
+    return false;
+  }
+}
+
+
+export async function parseSystemdService(service: string) {
+  const output = await new Deno.Command('systemctl',
+    { args: ['show', service, '--user', '--no-pager'], stdout: 'piped' }).output();
+  const text = new TextDecoder().decode(output.stdout);
+
+  const result: Record<string, string> = {}
+
+  for (const line of text.split('\n')) {
+    const [key, value] = line.split('=');
+    if (key && value) result[key] = value;
+  }
+
+  if (result.LoadError) throw `Service ${service} not loaded: ${result.LoadError}`;
+
+  return result;
+}
+
+
+
+
+
+export async function $(...args: string[]) {
+  const cmd = new Deno.Command(args[0], {
+    args: args.slice(1),
+    stderr: 'piped',
+    stdout: 'piped',
+  });
+
+  const output = await cmd.output();
+
+  if (!output.success) {
+    const error = new TextDecoder().decode(output.stderr);
+    console.error(`${args.join(' ')} failed with error: ${error.split('\n').map((l) => '  ' + l).join('\n')}`);
+    return { error, ok: false };
+  } else {
+    const result = new TextDecoder().decode(output.stdout);
+    return { result, ok: true };
+  }
 }

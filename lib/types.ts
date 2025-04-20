@@ -1,3 +1,5 @@
+import { parseArgs } from "jsr:@std/cli";
+
 /** Represents a network address in the format "host:port" or ":port" (e.g., ":80", "localhost:8080"). */
 export type NetworkAddress = string;
 
@@ -84,4 +86,15 @@ export type CaddyConfig = {
       }>;
     };
   };
+};
+
+
+export interface CadeployOptions {
+  homeDir: string;
+  scriptURL: string;
+  args: ReturnType<typeof parseArgs<CadeployArgs>>;
+}
+
+export interface CadeployArgs {
+  entry?: string, build?: string | boolean, dir?: string, domain?: string, name?: string
 };
