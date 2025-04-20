@@ -13,7 +13,7 @@ const args = parseArgs<CadeployArgs>(Deno.args);
 
 const homeDir = Deno.env.get('HOME')!;
 
-const scriptURL = import.meta.filename!;
+const scriptURL = import.meta.url;
 const task = args._[0];
 
 const options: CadeployOptions = { homeDir, args, scriptURL }
