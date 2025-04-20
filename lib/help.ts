@@ -4,7 +4,7 @@ import * as Color from 'jsr:@std/fmt/colors';
 
 export function Help() {
   helpCLI({
-    name: "cadeploy 04:48:48 PM",
+    name: "cadeploy",
     description: "One step deployments",
     usage: `cadeploy <git-url> [options]
 \tcadeploy proxy <host:port>

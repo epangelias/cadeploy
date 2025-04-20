@@ -1,8 +1,9 @@
+import { CadeployOptions } from "./types.ts";
 import { parseSystemdService } from "./utils.ts";
 import * as Color from 'jsr:@std/fmt/colors';
 
-export async function ListDeployments() {
-  const entries = Deno.readDir('/etc/systemd/user/')
+export async function ListDeployments(options: CadeployOptions) {
+  const entries = Deno.readDir(`${options.homeDir}/.config/systemd/user`)
 
   for await (const entry of entries) {
     try {
