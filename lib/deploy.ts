@@ -14,6 +14,8 @@ export async function Deploy(options: CadeployOptions) {
 
   const port = await findOpenPort(5000, 6000);
 
+  console.log(options);
+
   const execStartPre = [
     'git pull',
     `${Deno.execPath()} -Ar ${options.scriptURL} proxy ${domain}:${port}`
