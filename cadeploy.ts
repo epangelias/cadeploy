@@ -20,6 +20,6 @@ const options: CadeployOptions = { homeDir, args, scriptURL }
 
 if (task == "proxy") await ReverseProxy(options);
 else if (task == "rm") await RemoveDeploy(options);
-else if (task == "list") await ListDeployments();
+else if (task == "list") await ListDeployments(options);
 else if (isURL(task)) await Deploy(options);
 else Help();
