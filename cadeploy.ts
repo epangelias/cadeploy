@@ -7,6 +7,7 @@ import { isURL } from "./lib/utils.ts";
 import { ReverseProxy } from "./lib/caddy.ts";
 import { RemoveDeploy } from "./lib/remove.ts";
 import { Help } from "./lib/help.ts";
+import { ListDeployments } from "./lib/list.ts";
 
 const args = parseArgs<CadeployArgs>(Deno.args);
 
@@ -19,6 +20,6 @@ const options: CadeployOptions = { homeDir, args, scriptURL }
 
 if (task == "proxy") await ReverseProxy(options);
 else if (task == "rm") await RemoveDeploy(options);
-else if (task == "list") await ListDeployments(options);
+else if (task == "list") await ListDeployments();
 else if (isURL(task)) await Deploy(options);
 else Help();

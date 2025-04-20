@@ -6,8 +6,8 @@ export function Help() {
   helpCLI({
     name: "cadeploy",
     description: "Caddy reverse proxy deployer",
-    usage: `cadeploy <git-url> [options]\n
-\tcadeploy proxy <host:port>\n
+    usage: `cadeploy <git-url> [options]
+\tcadeploy proxy <host:port>
 \tcadeploy rm <service>
 \tcadeploy list`,
     options: [
