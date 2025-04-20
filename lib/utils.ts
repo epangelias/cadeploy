@@ -66,8 +66,8 @@ export async function parseSystemdService(service: string) {
   const result: Record<string, string> = {}
 
   for (const line of text.split('\n')) {
-    const [key, value] = line.split('=');
-    if (key && value) result[key] = value;
+    const [key, ...values] = line.split('=');
+    if (key && values.length) result[key] = values.join('=');
   }
 
   if (result.LoadError) throw `Service ${service} not loaded: ${result.LoadError}`;

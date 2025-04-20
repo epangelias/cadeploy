@@ -6,12 +6,11 @@ export async function ListDeployments(options: CadeployOptions) {
   const entries = Deno.readDir(`${options.homeDir}/.config/systemd/user`)
 
   for await (const entry of entries) {
+    console.log();
     try {
       if (!entry.isFile || !entry.name.endsWith('.service')) continue;
       const service = await parseSystemdService(entry.name);
-      console.log(`${Color.green(entry.name)}
-\t${service.Description}
-\t${service.ExecStart}
+      console.log(`${Color.green(entry.name.slice(0, -8))} - ${Color.gray(service.Description)}
 \t${service.WorkingDirectory}
 \t${service.Environment}\n`);
     } catch (_e) { }
