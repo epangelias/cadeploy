@@ -6,16 +6,16 @@ export async function getCaddyRoutes() {
   if (!res.ok) throw await res.text()
   const config = await res.json() as CaddyConfig;
 
-  if (!config.apps.http.servers.default)
-    config.apps.http.servers.default = { listen: [":80"], routes: [] };
-  if (!config.apps.http.servers.default.routes)
-    config.apps.http.servers.default.routes = [];
+  if (!config.apps.http.servers.srv0)
+    config.apps.http.servers.srv0 = { listen: [":80"], routes: [] };
+  if (!config.apps.http.servers.srv0.routes)
+    config.apps.http.servers.srv0.routes = [];
 
   return config;
 }
 
 export async function setCaddyConfig(config: CaddyConfig) {
-  console.log(config.apps.http.servers.default);
+  console.log(config.apps.http.servers.srv0);
   const body = JSON.stringify(config);
   console.log({ body });
   const res = await fetch('http://localhost:2019/load', {
@@ -46,7 +46,7 @@ export async function ReverseProxy(options: CadeployOptions) {
 
   console.log('new route', route);
 
-  const routes = config.apps.http.servers.default.routes;
+  const routes = config.apps.http.servers.srv0.routes;
 
   const existingRouteIndex = routes.findIndex(
     (route) => route.match?.some((matcher) => matcher.host.includes(host))
@@ -60,7 +60,7 @@ export async function ReverseProxy(options: CadeployOptions) {
 
 export async function findOpenPort(startPort: number, endPort: number) {
   const config = await getCaddyRoutes()
-  const routes = config.apps.http.servers.default.routes
+  const routes = config.apps.http.servers.srv0.routes
 
   const usedPorts = new Set<number>();
   for (const route of routes) {
