@@ -64,6 +64,7 @@ export async function findOpenPort(startPort: number, endPort: number) {
 
   const usedPorts = new Set<number>();
   for (const route of routes) {
+    if (!route.match || !route.handle) continue;
     for (const handler of route.handle) {
       if (handler.upstreams) {
         for (const upstream of handler.upstreams) {
