@@ -6,6 +6,7 @@ import * as Path from "jsr:@std/path";
 export async function Deploy(options: CadeployOptions) {
   const url = options.args._[0].toString();
   const projectName = url.match(/([^\/]+)\.git/)?.at(1)! || options.args.name;
+  console.log({ projectName });
   const domain = options.args.domain;
   const dir = options.args.dir
     ? Path.resolve(options.args.dir)
