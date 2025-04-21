@@ -11,12 +11,11 @@ export async function ListDeployments(options: CadeployOptions) {
       if (!entry.isFile || !entry.name.endsWith(".service")) continue;
       const service = await parseSystemdService(entry.name);
       console.log(
-        `${Color.green(entry.name.slice(0, -8))} ${
-          Color.gray(service.Description)
+        `${Color.green(entry.name.slice(0, -8))} ${Color.gray(service.Description)
         }
 \t${service.WorkingDirectory}
-\t${service.Environment}\n`,
+\t${service.Environment ? service.Environment.split("\n") + '\n' : ""}`,
       );
-    } catch (_e) {}
+    } catch (_e) { }
   }
 }
