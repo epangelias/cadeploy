@@ -14,7 +14,7 @@ export async function ListDeployments(options: CadeployOptions) {
         `${Color.green(entry.name.slice(0, -8))} ${Color.gray(service.Description)
         }
 \t${service.WorkingDirectory}
-\t${service.Environment ? service.Environment.split("\n") + '\n' : ""}`,
+\t${service.Environment ? service.Environment + '\n' : ""}`,
       );
     } catch (_e) { }
   }
