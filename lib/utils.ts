@@ -84,7 +84,8 @@ export async function parseSystemdService(service: string) {
 
   for (const line of text.split("\n")) {
     const [key, ...values] = line.split("=");
-    if (key && values.length) result[key] = values.join("=");
+    const value = values ? values.join('=') : '';
+    if (key && values.length) result[key] = value;
   }
 
   if (result.LoadError) {
