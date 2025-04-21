@@ -4,6 +4,7 @@ import { cloneRepo, createService } from "./utils.ts";
 import * as Path from "jsr:@std/path";
 
 export async function Deploy(options: CadeployOptions) {
+  console.log({ options })
   const url = options.args._[0].toString();
   const projectName = url.match(/([^\/]+)\.git/)?.at(1)! || options.args.name;
   const domain = options.args.domain;
