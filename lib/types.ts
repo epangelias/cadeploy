@@ -22,7 +22,7 @@ export type Upstream = {
 /** Defines a handler for processing HTTP requests. */
 export type Handler = {
   /** Type of handler (e.g., "reverse_proxy", "static_response", "file_server", or custom). */
-  handler: 'reverse_proxy' | 'static_response' | 'file_server' | string;
+  handler: "reverse_proxy" | "static_response" | "file_server" | string;
   /** List of upstream servers for reverse_proxy handler. */
   upstreams?: Upstream[];
   /** Response configuration for static_response handler. */
@@ -54,7 +54,7 @@ export type HttpServer = {
   /** Routes for handling requests. */
   routes: Route[];
   /** Automatic HTTPS configuration ("on" to enable, "off" to disable). */
-  autoHttps?: 'off' | 'on';
+  autoHttps?: "off" | "on";
 };
 
 /** Defines the HTTP application containing server configurations. */
@@ -82,12 +82,11 @@ export type CaddyConfig = {
       /** Log configurations, keyed by log name. */
       logs: Record<string, {
         /** Log level (e.g., "DEBUG", "INFO", "WARN", "ERROR"). */
-        level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
+        level: "DEBUG" | "INFO" | "WARN" | "ERROR";
       }>;
     };
   };
 };
-
 
 export interface CadeployOptions {
   homeDir: string;
@@ -96,5 +95,9 @@ export interface CadeployOptions {
 }
 
 export interface CadeployArgs {
-  entry?: string, build?: string | boolean, dir?: string, domain?: string, name?: string
-};
+  entry?: string;
+  build?: string | boolean;
+  dir?: string;
+  domain?: string;
+  name?: string;
+}

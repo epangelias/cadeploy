@@ -11,12 +11,12 @@ import { ListDeployments } from "./lib/list.ts";
 
 const args = parseArgs<CadeployArgs>(Deno.args);
 
-const homeDir = Deno.env.get('HOME')!;
+const homeDir = Deno.env.get("HOME")!;
 
 const scriptURL = import.meta.url;
 const task = args._[0];
 
-const options: CadeployOptions = { homeDir, args, scriptURL }
+const options: CadeployOptions = { homeDir, args, scriptURL };
 
 if (task == "proxy") await ReverseProxy(options);
 else if (task == "rm") await RemoveDeploy(options);
