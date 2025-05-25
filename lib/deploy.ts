@@ -19,7 +19,7 @@ export async function Deploy(options: CadeployOptions) {
 
   const environments = [];
 
-  const execStartPre = ["git pull"];
+  const execStartPre = ["git pull --force"];
   if (build) execStartPre.push(build);
 
   if (domain) {
