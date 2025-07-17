@@ -5,32 +5,31 @@ export async function getCaddyRoutes() {
   if (!res.ok) throw await res.text();
   const config = await res.json() as CaddyConfig;
 
-  if (!config.apps.http.servers.srv0) {
+  if (!config.apps.http.servers.srv0)
     config.apps.http.servers.srv0 = { listen: [":80"], routes: [] };
-  }
-  if (!config.apps.http.servers.srv0.routes) {
+
+  if (!config.apps.http.servers.srv0.routes)
     config.apps.http.servers.srv0.routes = [];
-  }
 
   return config;
 }
 
 export async function setCaddyConfig(config: CaddyConfig) {
-  console.log(config.apps.http.servers.srv0);
   const body = JSON.stringify(config);
-  console.log({ body });
   const res = await fetch("http://localhost:2019/load", {
     method: "POST",
     body,
     headers: { "Content-Type": "application/json" },
   });
-  console.log(res);
   if (!res.ok) throw await res.text();
   console.log(await res.text());
 }
 
-export async function ReverseProxy(options: CadeployOptions) {
-  const [host, port] = options.args._[1].toString().split(":");
+export async function ReverseProxy() {
+  const port = Deno.env.get("PORT")!;
+  if (!port) throw "PORT not set";
+  const host = Deno.env.get("DOMAIN")!;
+  if (!host) throw "HOST not set";
 
   const config = await getCaddyRoutes();
 
